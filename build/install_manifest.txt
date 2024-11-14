@@ -1,2 +1,0 @@
-/home/jmtang/codes/cuda_demos/build/install/bin/cuda_stream
-/home/jmtang/codes/cuda_demos/build/install/bin/query_cuda_engine

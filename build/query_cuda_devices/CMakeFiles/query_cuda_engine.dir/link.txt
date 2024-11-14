@@ -1,1 +1,0 @@
-/usr/lib/nvidia-cuda-toolkit/bin/g++ -L/usr/lib/x86_64-linux-gnu/ @CMakeFiles/query_cuda_engine.dir/objects1.rsp -o query_cuda_engine @CMakeFiles/query_cuda_engine.dir/linkLibs.rsp -L"/usr/lib/x86_64-linux-gnu/stubs" -L"/usr/lib/x86_64-linux-gnu"
