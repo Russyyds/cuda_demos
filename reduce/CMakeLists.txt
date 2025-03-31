@@ -1,5 +1,3 @@
-cmake_minimum_required(VERSION 3.10)
-
 # 查找当前目录下的所有源文件
 file(GLOB_RECURSE SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cu ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/*.cuh)
 

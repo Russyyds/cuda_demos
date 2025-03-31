@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string>
 #include "cuda_runtime.h"
 #include "block_reduce.cuh"
 
@@ -23,7 +24,8 @@ int main(int argc, char *argv[]) {
     // Launch kernel
     dim3 block(BLOCK_SIZE);
     dim3 grid(1);
-    block_reduce_f32_kernel<<<grid, block>>>(d_in, d_out, N);
+    std::string ele_type("f32");
+    launch_block_reduce_f32<BLOCK_SIZE>(d_in, d_out, N, grid, block);
 
     // Copy result back to host
     cudaMemcpy(h_out, d_out, sizeof(float), cudaMemcpyDeviceToHost);

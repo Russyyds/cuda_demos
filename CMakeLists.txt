@@ -1,5 +1,5 @@
-cmake_minimum_required(VERSION 3.10)
-project(cuda_demos LANGUAGES CXX CUDA)
+cmake_minimum_required(VERSION 3.4)
+project(cuda_demos LANGUAGES CUDA CXX)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -11,4 +11,5 @@ check_language(CUDA)
 
 add_subdirectory(cuda_stream)
 add_subdirectory(query_cuda_devices)
+add_subdirectory(softmax)
 add_subdirectory(reduce)

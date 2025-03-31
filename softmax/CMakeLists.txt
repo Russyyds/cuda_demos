@@ -1,0 +1,5 @@
+file(GLOB SRC "*.cpp" "*.cu")
+add_executable(softmax ${SRC})
+# set_target_properties(block_reduce PROPERTIES CUDA_ARCHITECTURES "80;86;89")
+# target_link_directories(softmax PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+install(TARGETS softmax DESTINATION bin)
