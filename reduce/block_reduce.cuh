@@ -12,14 +12,29 @@ namespace {
 template <const int BlockSize = BLOCK_SIZE>
 __global__ void block_reduce_f32_kernel(float* input, float* output, const int n);
 
+template<const int BlockSize = BLOCK_SIZE / 4>
+__global__ void block_reduce_f32x4_kernel(float* input, float* output, const int n);
+
 template <const int BlockSize = BLOCK_SIZE>
 __global__ void block_reduce_f16_kernel(half* input, float* output, const int n);
+
+template <const int BlockSize = BLOCK_SIZE / 2>
+__global__ void block_reduce_f16x2_kernel(half* input, float* output, const int n);
+
+template <const int BlockSize = BLOCK_SIZE / 8>
+__global__ void block_reduce_f16x8_kernel(half* input, float* output, const int n);
 
 template<const int BlockSize = BLOCK_SIZE>
 __global__ void block_reduce_bf16_kernel(__nv_bfloat16* input, float* output, const int n);
 
 void launch_block_reduce_f32(float* input, float* output, const int num, dim3 grid, dim3 block);
 
+void launch_block_reduce_f32x4(float* input, float* output, const int num, dim3 grid, dim3 block);
+
 void launch_block_reduce_f16(half* input, float* output, const int num, dim3 grid, dim3 block);
+
+void launch_block_reduce_f16x2(half* input, float* output, const int num, dim3 grid, dim3 block);
+
+void launch_block_reduce_f16x8(half* input, float* output, const int num, dim3 grid, dim3 block);
 
 void launch_block_reduce_bf16(__nv_bfloat16* input, float* output, const int num, dim3 grid, dim3 block);

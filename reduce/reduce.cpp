@@ -7,7 +7,7 @@
 #include "block_reduce.cuh"
 
 int main(int argc, char *argv[]) {
-    const int N = 256;
+    const int N = 1024;
     const int size = N * sizeof(float);
     const int half_size = N * sizeof(half);
 
@@ -26,15 +26,21 @@ int main(int argc, char *argv[]) {
     }
 
     float *d_in, *d_out;
+    float *d_out_4;
     half *d_in_f16; 
     float *d_out_f16;
+    float *d_out_f16x2;
+    float *d_out_f16x8;
     __nv_bfloat16 *d_in_bf16;
     float *d_out_bf16;
 
     cudaMalloc((void **)&d_in, size);
     cudaMalloc((void **)&d_out, sizeof(float));
+    cudaMalloc((void **)&d_out_4, sizeof(float));
     cudaMalloc((void **)&d_in_f16, half_size);
     cudaMalloc((void **)&d_out_f16, sizeof(float));
+    cudaMalloc((void **)&d_out_f16x2, sizeof(float));
+    cudaMalloc((void **)&d_out_f16x8, sizeof(float));
     cudaMalloc((void **)&d_in_bf16, half_size);
     cudaMalloc((void **)&d_out_bf16, sizeof(float));
 
@@ -44,6 +50,8 @@ int main(int argc, char *argv[]) {
 
     // Launch kernel
     dim3 block(BLOCK_SIZE);
+    dim3 block4(BLOCK_SIZE / 4);
+    dim3 block8(BLOCK_SIZE / 8);
     dim3 grid(N/BLOCK_SIZE);
     launch_block_reduce_f32(d_in, d_out, N, grid, block);
 
@@ -52,10 +60,25 @@ int main(int argc, char *argv[]) {
     cudaDeviceSynchronize();
     printf("FP32 sum: %f\n", *h_out);
 
+    launch_block_reduce_f32x4(d_in, d_out_4, N, grid, block4);
+    cudaMemcpy(h_out, d_out_4, sizeof(float), cudaMemcpyDeviceToHost);
+    cudaDeviceSynchronize();
+    printf("FP32x4 sum: %f\n", *h_out);
+
     launch_block_reduce_f16(d_in_f16, d_out_f16, N, grid, block);
     cudaMemcpy(h_out_f16, d_out_f16, sizeof(float), cudaMemcpyDeviceToHost);
     cudaDeviceSynchronize();
     printf("FP16 sum:%f\n", *h_out_f16);
+
+    launch_block_reduce_f16x2(d_in_f16, d_out_f16x2, N, grid, block);
+    cudaMemcpy(h_out, d_out_f16x2, sizeof(float), cudaMemcpyDeviceToHost);
+    cudaDeviceSynchronize();
+    printf("FP16x2 sum:%f\n", *h_out);
+
+    launch_block_reduce_f16x8(d_in_f16, d_out_f16x8, N, grid, block8);
+    cudaMemcpy(h_out, d_out_f16x8, sizeof(float), cudaMemcpyDeviceToHost);
+    cudaDeviceSynchronize();
+    printf("FP16x8 sum:%f\n", *h_out);
 
     launch_block_reduce_bf16(d_in_bf16, d_out_bf16, N, grid, block);
     cudaMemcpy(h_out_bf16, d_out_bf16, sizeof(float), cudaMemcpyDeviceToHost);
