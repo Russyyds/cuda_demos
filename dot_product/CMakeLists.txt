@@ -1,0 +1,7 @@
+file(GLOB_RECURSE SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cu ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/*.cuh)
+
+add_executable(dot_prod ${SOURCES})
+
+set_target_properties(dot_prod PROPERTIES CUDA_ARCHITECTURES "80;86;89")
+
+install(TARGETS dot_prod DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
